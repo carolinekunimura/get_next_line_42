@@ -6,7 +6,7 @@
 /*   By: ckunimur <ckunimur@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 14:14:47 by ckunimur          #+#    #+#             */
-/*   Updated: 2022/10/14 17:52:43 by ckunimur         ###   ########.fr       */
+/*   Updated: 2022/10/18 16:56:37 by ckunimur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ char	*get_next_line(int fd)
 	char	*line;
 
 	line = NULL;
-	if (fd < 0 || BUFFER_SIZE <= 0)
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0))
 		return (NULL);
 	line = takenextline(fd);
 	return (line);
@@ -27,26 +27,24 @@ char	*takenextline(int fd)
 {
 	char	*buffer;
 	char	*line;
-	int		reader;
+	size_t	reader;
 
 	line = NULL;
 	if (fd > 0 && BUFFER_SIZE > 0)
 	{
-		buffer = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
-		while (line == (NULL))
+		while (line == NULL)
 		{
+			buffer = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
 			reader = read(fd, buffer, BUFFER_SIZE);
 			if (reader == 0)
-				return (ft_makestr(buffer, '\0'));
-			if (reader < BUFFER_SIZE && !ft_ifchr(reader, buffer, '\n'))
 			{
-				line = ft_calloc((reader + 2), sizeof(char));
-				while (buffer)
-					*line++ = *buffer++;
-				*line++ = '\n';
+				buffer[reader] = '\0';
+				line = ft_makestr(buffer, '\0');
+				free(buffer);
 				return (line);
 			}
 			line = ft_makestr(buffer, '\n');
+			free(buffer);
 		}
 	}
 	return (line);
@@ -57,34 +55,29 @@ char	*ft_makestr(const char *buffer, char c)
 	char		*line;
 	char		*rmd;
 	static char	*remainder;
-	int			size;
 
-	if (c == '\0')
-		return (ft_lastline(remainder));
+	if (c == '\0' && !ft_strchr(remainder, '\n'))
+	{
+		line = remainder;
+		remainder = NULL;
+		return (line);
+	}
+	else
+		c = '\n';
 	buffer = ft_strjoin(remainder, buffer);
 	rmd = ft_strchr(buffer, c);
 	free(remainder);
+	remainder = NULL;
 	if (!rmd)
 	{
-		remainder = ft_calloc(ft_strlen(buffer), sizeof(char));
-		ft_strlcpy(remainder, buffer, ft_strlen(buffer));
+		remainder = ft_strdup(buffer);
+		free((char *)buffer);
 		return (NULL);
 	}
-	remainder = ft_calloc((ft_strlen(rmd) + 1), sizeof(char));
-	ft_strlcpy(remainder, rmd, sizeof(rmd));
-	size = ((ft_strlen(buffer)) - (ft_strlen(remainder)));
-	line = ft_calloc(size, sizeof(char *));
-	ft_strlcpy(line, buffer, size);
-	return (line);
-}
-
-char	*ft_lastline(char *remainder)
-{
-	char	*line;
-
-	line = ft_calloc(ft_strlen((const char *)remainder), sizeof(char));
-	ft_strlcpy(line, (const char *)remainder, ft_strlen((const char *)remainder));
-	free(remainder);
+	if (rmd[1] != '\0')
+		remainder = ft_strdup(rmd + 1);
+	line = ft_substr(buffer, 0, (ft_strlen(buffer)) - (ft_strlen(remainder)));
+	free((char *)buffer);
 	return (line);
 }
 
@@ -97,13 +90,8 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	i = 0;
 	buffer = NULL;
 	size_t_max = -1;
-	if (size != 0 && nmemb > size_t_max / size)
+	if (nmemb * size == 0 || (size != 0 && nmemb > size_t_max / size))
 		return (NULL);
-	if (nmemb == 0 || size == 0)
-	{
-		nmemb = 1;
-		size = 1;
-	}
 	buffer = malloc(nmemb * size);
 	if (buffer == NULL)
 		return (NULL);
@@ -113,4 +101,31 @@ void	*ft_calloc(size_t nmemb, size_t size)
 		i++;
 	}
 	return (buffer);
+}
+
+char	*ft_substr(char const *s, unsigned int start, size_t len)
+{
+	size_t	s_len;
+	size_t	i;
+	char	*p;
+
+	s_len = ft_strlen(s);
+	i = 0;
+	if (len >= s_len)
+		len = (s_len - start);
+	if (start >= s_len)
+	{
+		return (ft_calloc(1, (sizeof(char))));
+	}
+	p = ft_calloc(len + 1, (sizeof(char)));
+	if (s)
+	{
+		while (i < len && s[start + i] != '\0')
+		{
+			p[i] = s[start + i];
+			i++;
+		}
+		p[i] = '\0';
+	}
+	return (p);
 }

@@ -6,7 +6,7 @@
 /*   By: ckunimur <ckunimur@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 14:14:37 by ckunimur          #+#    #+#             */
-/*   Updated: 2022/10/14 17:42:22 by ckunimur         ###   ########.fr       */
+/*   Updated: 2022/10/14 19:15:56 by ckunimur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,29 +77,26 @@ int	ft_ifchr(int len, char *p, char c)
 	i = 0;
 	while (i < len)
 	{
-		if (p[i] == c)
+		if (p && p[i] == c)
 			return (1);
 	}
 	return (0);
 }
 
-size_t	ft_strlcpy(char *dst, const char *src, size_t size)
+char	*ft_strdup(const char *s)
 {
-	size_t	i;
+	char	*buffer;
+	int		i;
 
 	i = 0;
-	if (size == 0)
+	buffer = malloc((ft_strlen(s) + 1) * sizeof(char));
+	if (!buffer)
+		return (NULL);
+	while (s[i] != '\0')
 	{
-		return (ft_strlen(src));
+		buffer[i] = s[i];
+		i++;
 	}
-	else
-	{
-		while (i < (size - 1) && i < (ft_strlen(src)))
-		{
-			dst[i] = ((char *)src)[i];
-			i++;
-		}
-		dst[i] = '\0';
-	}
-	return (ft_strlen(src));
+	buffer[i] = '\0';
+	return (buffer);
 }

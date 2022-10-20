@@ -6,7 +6,7 @@
 /*   By: ckunimur <ckunimur@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 14:14:50 by ckunimur          #+#    #+#             */
-/*   Updated: 2022/10/14 17:42:57 by ckunimur         ###   ########.fr       */
+/*   Updated: 2022/10/18 16:54:40 by ckunimur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,10 +27,11 @@ char	*ft_strchr(const char *p, char c);
 char	*takenextline(int fd);
 size_t	ft_strlen(const char *str);
 char	*ft_strjoin(char const *s1, char const *s2);
-size_t	ft_strlcpy(char *dst, const char *src, size_t size);
+char	*ft_strdup(const char *s);
 int		ft_ifchr(int len, char *p, char c);
 char	*ft_makestr(const char *buffer, char c);
 char	*ft_lastline(char *p);
 void	*ft_calloc(size_t nmemb, size_t size);
+char	*ft_substr(char const *s, unsigned int start, size_t len);
 
 #endif

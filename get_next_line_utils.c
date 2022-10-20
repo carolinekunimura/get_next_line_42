@@ -6,7 +6,7 @@
 /*   By: ckunimur <ckunimur@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 14:14:37 by ckunimur          #+#    #+#             */
-/*   Updated: 2022/10/14 19:15:56 by ckunimur         ###   ########.fr       */
+/*   Updated: 2022/10/20 15:47:20 by ckunimur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,17 +70,31 @@ char	*ft_strchr(const char *s, char c)
 	return (NULL);
 }
 
-int	ft_ifchr(int len, char *p, char c)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	int	i;
+	size_t	s_len;
+	size_t	i;
+	char	*p;
 
+	s_len = ft_strlen(s);
 	i = 0;
-	while (i < len)
+	if (len >= s_len)
+		len = (s_len - start);
+	if (start >= s_len)
 	{
-		if (p && p[i] == c)
-			return (1);
+		return (ft_calloc(1, (sizeof(char))));
 	}
-	return (0);
+	p = ft_calloc(len + 1, (sizeof(char)));
+	if (s)
+	{
+		while (i < len && s[start + i] != '\0')
+		{
+			p[i] = s[start + i];
+			i++;
+		}
+		p[i] = '\0';
+	}
+	return (p);
 }
 
 char	*ft_strdup(const char *s)
@@ -89,7 +103,7 @@ char	*ft_strdup(const char *s)
 	int		i;
 
 	i = 0;
-	buffer = malloc((ft_strlen(s) + 1) * sizeof(char));
+	buffer = ft_calloc((ft_strlen(s) + 1), sizeof(char));
 	if (!buffer)
 		return (NULL);
 	while (s[i] != '\0')

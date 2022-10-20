@@ -6,7 +6,7 @@
 /*   By: ckunimur <ckunimur@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 14:14:47 by ckunimur          #+#    #+#             */
-/*   Updated: 2022/10/18 16:56:37 by ckunimur         ###   ########.fr       */
+/*   Updated: 2022/10/20 16:30:47 by ckunimur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,12 +30,101 @@ char	*takenextline(int fd)
 	size_t	reader;
 
 	line = NULL;
-	if (fd > 0 && BUFFER_SIZE > 0)
+	if (fd >= 0 && BUFFER_SIZE > 0)
 	{
 		while (line == NULL)
 		{
-			buffer = ft_calloc((BUFFER_SIZE + 1), sizeof(char));
+			buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
 			reader = read(fd, buffer, BUFFER_SIZE);
+			buffer[reader] = '\0';
+			line = ft_makestr(buffer, '\n');
+			free(buffer);
+		}
+	}
+	return (line);
+}
+
+char	*ft_makestr(char *buffer, char c)
+{
+	char		*line;
+	char		*rmd;
+	static char	*remainder;
+
+	if (buffer[0] == '\0' && !ft_strchr(remainder, '\n'))
+	{
+		line = remainder;
+		remainder = NULL;
+	}
+	rmd = ft_strchr(buffer, '\n');
+	if (!rmd)
+	{
+		remainder = ft_strjoin(remainder, buffer);
+		free(buffer);
+		return (NULL);
+	}
+	else
+	{
+		if (rmd[1] != '\0')
+			remainder = ft_strdup(rmd + 1);
+		line = ft_strjoin(remainder, 
+		ft_substr(buffer, 0, (ft_strlen(buffer) - ft_strlen(rmd))));
+		free(buffer);
+		free(remainder);
+		remainder = ft_strdup(rmd);
+	}
+	return (line);
+}
+
+void	*ft_calloc(size_t nmemb, size_t size)
+{
+	size_t	i;
+	void	*buffer;
+	size_t	size_t_max;
+
+	i = 0;
+	buffer = NULL;
+	size_t_max = -1;
+	if (nmemb * size == 0 || (size != 0 && nmemb > size_t_max / size))
+		return (NULL);
+	buffer = malloc(nmemb * size);
+	if (buffer == NULL)
+		return (NULL);
+	while (nmemb * size != i)
+	{
+		((char *)buffer)[i] = '\0';
+		i++;
+	}
+	return (buffer);
+}
+
+/*
+#include "get_next_line.h"
+
+char	*get_next_line(int fd)
+{
+	char	*line;
+
+	line = NULL;
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0))
+		return (NULL);
+	line = takenextline(fd);
+	return (line);
+}
+
+char	*takenextline(int fd)
+{
+	char	*buffer;
+	char	*line;
+	size_t	reader;
+
+	line = NULL;
+	if (fd >= 0 && BUFFER_SIZE > 0)
+	{
+		while (line == NULL)
+		{
+			buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
+			reader = read(fd, buffer, BUFFER_SIZE);
+			buffer[reader] = '\0';
 			if (reader == 0)
 			{
 				buffer[reader] = '\0';
@@ -50,7 +139,7 @@ char	*takenextline(int fd)
 	return (line);
 }
 
-char	*ft_makestr(const char *buffer, char c)
+char	*ft_makestr(char *buffer, char c)
 {
 	char		*line;
 	char		*rmd;
@@ -129,3 +218,4 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	}
 	return (p);
 }
+*/

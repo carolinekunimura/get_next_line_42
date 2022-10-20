@@ -6,7 +6,7 @@
 /*   By: ckunimur <ckunimur@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 14:14:50 by ckunimur          #+#    #+#             */
-/*   Updated: 2022/10/18 16:54:40 by ckunimur         ###   ########.fr       */
+/*   Updated: 2022/10/20 16:18:55 by ckunimur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # include <stdlib.h>
 
 # ifndef BUFFER_SIZE
-#  define BUFFER_SIZE 1
+#  define BUFFER_SIZE 42
 # endif
 
 // functions 
@@ -28,10 +28,8 @@ char	*takenextline(int fd);
 size_t	ft_strlen(const char *str);
 char	*ft_strjoin(char const *s1, char const *s2);
 char	*ft_strdup(const char *s);
-int		ft_ifchr(int len, char *p, char c);
-char	*ft_makestr(const char *buffer, char c);
-char	*ft_lastline(char *p);
-void	*ft_calloc(size_t nmemb, size_t size);
+char	*ft_makestr(char *buffer, char c);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
+void	*ft_calloc(size_t nmemb, size_t size);
 
 #endif

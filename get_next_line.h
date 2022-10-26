@@ -6,7 +6,7 @@
 /*   By: ckunimur <ckunimur@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 14:14:50 by ckunimur          #+#    #+#             */
-/*   Updated: 2022/10/20 16:18:55 by ckunimur         ###   ########.fr       */
+/*   Updated: 2022/10/26 13:49:54 by ckunimur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ char	*get_next_line(int fd);
 char	*ft_strchr(const char *p, char c);
 char	*takenextline(int fd);
 size_t	ft_strlen(const char *str);
-char	*ft_strjoin(char const *s1, char const *s2);
+char	*ft_strjoin(char const *s1, char const *s2, size_t reader);
 char	*ft_strdup(const char *s);
-char	*ft_makestr(char *buffer, char c);
+char	*ft_makestr(char *buffer, char c, size_t reader);
 char	*ft_substr(char const *s, unsigned int start, size_t len);
 void	*ft_calloc(size_t nmemb, size_t size);
 

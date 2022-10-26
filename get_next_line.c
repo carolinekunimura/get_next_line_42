@@ -6,7 +6,7 @@
 /*   By: ckunimur <ckunimur@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 14:14:47 by ckunimur          #+#    #+#             */
-/*   Updated: 2022/10/22 18:28:21 by ckunimur         ###   ########.fr       */
+/*   Updated: 2022/10/26 14:10:44 by ckunimur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,32 +40,30 @@ char	*takenextline(int fd)
 			if (reader == 0)
 			{
 				buffer[reader] = '\0';
-				line = ft_makestr(buffer, '\0');
+				line = ft_makestr(buffer, '\n', reader);
 				free(buffer);
 				return (line);
 			}
-			line = ft_makestr(buffer, '\n');
+			line = ft_makestr(buffer, '\n', reader);
 			free(buffer);
 		}
 	}
 	return (line);
 }
 
-char	*ft_makestr(char *buffer, char c)
+char	*ft_makestr(char *buffer, char c, size_t reader)
 {
 	char		*line;
 	char		*rmd;
 	static char	*remainder;
 
-	if (c == '\0' && !ft_strchr(remainder, '\n'))
+	if (reader == 0 && !ft_strchr(remainder, '\n'))
 	{
 		line = remainder;
 		remainder = NULL;
 		return (line);
 	}
-	else
-		c = '\n';
-	buffer = ft_strjoin(remainder, buffer);
+	buffer = ft_strjoin(remainder, buffer, reader);
 	rmd = ft_strchr(buffer, c);
 	free(remainder);
 	remainder = NULL;

@@ -6,7 +6,7 @@
 /*   By: ckunimur <ckunimur@student.42sp.org.br>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 14:14:37 by ckunimur          #+#    #+#             */
-/*   Updated: 2022/10/20 15:47:20 by ckunimur         ###   ########.fr       */
+/*   Updated: 2022/10/26 12:20:31 by ckunimur         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,28 +24,27 @@ size_t	ft_strlen(const char *str)
 	return (i);
 }
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char const *s1, char const *s2, size_t reader)
 {
 	size_t	i;
 	size_t	j;
 	char	*p;
 	size_t	size_len;
+	size_t	len1;
 
 	i = 0;
 	j = 0;
 	if (!s1 && !s2)
 		return (NULL);
-	size_len = ft_strlen((char *)s1) + ft_strlen ((char *)s2);
+	len1 = ft_strlen(s1);
+	size_len = len1 + reader;
 	p = ft_calloc((size_len + 1), (sizeof(char)));
 	while (i < size_len)
 	{
-		if (i < ft_strlen((char *)s1))
+		if (i < len1)
 			p[i] = s1[i];
-		if (i >= ft_strlen((char *)s1))
-		{
-			p[i] = s2[j];
-			j++;
-		}
+		if (i >= len1)
+			p[i] = s2[j++];
 		i++;
 	}
 	p[i] = '\0';
